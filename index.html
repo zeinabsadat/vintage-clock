@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Elegant Teardrop Hand Clock</title>
+<title>Classic Spade and Loop Hand Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@ svg {
 
 text {
   font-family: "Bodoni Moda", serif;
-  font-size: 52px; 
+  font-size: 50px; 
   font-weight: 400;
   fill: black;
   text-anchor: middle;
@@ -40,7 +40,7 @@ text {
   transform-origin: 300px 300px;
   fill: black;
   stroke: black;
-  stroke-width: 0.2;
+  stroke-width: 0.1;
 }
 
 .second {
@@ -48,7 +48,7 @@ text {
   fill: none;
 }
 
-.center-pin {
+.center-cap {
   fill: black;
 }
 </style>
@@ -61,28 +61,24 @@ text {
   <g id="markers"></g>
 
   <g id="hour" class="hand">
-    <path d="M300 300 
-             L300 290
-             C292 285, 288 275, 288 265
-             C288 250, 300 235, 300 220
-             C300 235, 312 250, 312 265
-             C312 275, 308 285, 300 290 Z" />
-    <path d="M300 220 L300 185" stroke-width="2.5" />
+    <path d="M300 300
+             L300 280 
+             M300 280 C280 275, 280 250, 300 240 
+             C320 250, 320 275, 300 280
+             M300 240 L300 200" />
   </g>
 
   <g id="minute" class="hand">
-    <path d="M300 300
-             L300 292
-             C294 288, 290 280, 290 270
-             C290 250, 300 230, 300 210
-             C300 230, 310 250, 310 270
-             C310 280, 306 288, 300 292 Z" />
-    <path d="M300 210 L300 115" stroke-width="2" />
+    <path d="M300 300 L300 285
+             M300 285 C292 280, 292 265, 300 260
+             C308 265, 308 280, 300 285
+             M300 260 L300 135" />
+    <circle cx="300" cy="275" r="3.5" fill="white" stroke="black" stroke-width="0.7"/>
   </g>
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="90"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
   
-  <circle cx="300" cy="300" r="5" class="center-pin"/>
+  <circle cx="300" cy="300" r="5" class="center-cap"/>
 </svg>
 
 <script>
@@ -97,24 +93,24 @@ const markGroup = document.getElementById("markers");
 romans.forEach((num, i) => {
   const angleDeg = i * 30; 
   const angleRad = (angleDeg - 90) * Math.PI / 180; 
-  const x = centerX + radius * Math.cos(angleRad);
-  const y = centerY + radius * Math.sin(angleRad);
+  const xNum = centerX + radius * Math.cos(angleRad);
+  const yNum = centerY + radius * Math.sin(angleRad);
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
+  text.setAttribute("transform", `translate(${xNum}, ${yNum}) rotate(${angleDeg})`);
   text.textContent = num;
   numGroup.appendChild(text);
 
-  // Slim Diamond Markers
-  const mAngleDeg = angleDeg + 15;
-  const mAngleRad = (mAngleDeg - 90) * Math.PI / 180;
-  const mx = centerX + radius * Math.cos(mAngleRad);
-  const my = centerY + radius * Math.sin(mAngleRad);
+  // Slim Diamond Markers between numbers
+  const markAngleDeg = angleDeg + 15;
+  const markAngleRad = (markAngleDeg - 90) * Math.PI / 180;
+  const mx = centerX + radius * Math.cos(markAngleRad);
+  const my = centerY + radius * Math.sin(markAngleRad);
 
   const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
   diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
   diamond.setAttribute("class", "marker");
-  diamond.setAttribute("transform", `translate(${mx}, ${my}) rotate(${mAngleDeg})`);
+  diamond.setAttribute("transform", `translate(${mx}, ${my}) rotate(${markAngleDeg})`);
   markGroup.appendChild(diamond);
 });
 
