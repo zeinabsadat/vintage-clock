@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Elegant Condensed Roman Clock</title>
+<title>Classic Rotating Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -24,13 +24,12 @@ svg {
 }
 
 text {
-  font-family: 'Big Shoulders Display', cursive;
-  font-size: 80px; 
+  font-family: "Bodoni Moda", serif;
+  font-size: 55px; 
+  font-weight: 400;
   fill: black;
   text-anchor: middle;
-  dominant-baseline: middle;
-  font-weight: 300;
-  text-transform: uppercase;
+  dominant-baseline: central;
 }
 
 .hand {
@@ -40,10 +39,22 @@ text {
   stroke-linecap: round;
 }
 
-.hour { stroke-width: 4; }
-.minute { stroke-width: 3; }
-.second { stroke: black; stroke-width: 1.2; }
-.center { fill: black; }
+.hour {
+  stroke-width: 3.5;
+}
+
+.minute {
+  stroke-width: 2.5;
+}
+
+.second {
+  stroke: black;
+  stroke-width: 1.2;
+}
+
+.center {
+  fill: black;
+}
 </style>
 </head>
 
@@ -54,9 +65,13 @@ text {
 
   <g id="numbers"></g>
 
-  <path id="hour" class="hand hour" d="M300 300 L300 210" />
-  <path id="minute" class="hand minute" d="M300 300 L300 140" />
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
+  <path id="hour" class="hand hour"
+  d="M300 300 L300 210" />
+
+  <path id="minute" class="hand minute"
+  d="M300 300 L300 145" />
+
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="110"/>
 </svg>
 
 <script>
@@ -68,18 +83,18 @@ const radius = 230;
 const group = document.getElementById("numbers");
 
 romans.forEach((num, i) => {
-  const angleDeg = i * 30;
-  const angleRad = (angleDeg - 90) * Math.PI / 180;
+  const angleDeg = i * 30; 
+  const angleRad = (angleDeg - 90) * Math.PI / 180; 
   
   const x = centerX + radius * Math.cos(angleRad);
   const y = centerY + radius * Math.sin(angleRad);
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  
+  // Rotating each number correctly while maintaining the classic Bodoni font
+  text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
+  
   text.textContent = num;
-  
-  // Rotate each number around its own center point on the circle
-  text.setAttribute("transform", `translate(${x},${y}) rotate(${angleDeg})`);
-  
   group.appendChild(text);
 });
 
