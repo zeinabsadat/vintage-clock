@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Classic Spade-Hand Roman Clock</title>
+<title>Classic Spade Hand Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -21,37 +21,31 @@ body {
 svg {
   width: 600px;
   height: 600px;
-  /* background: #f9f9f9; /* آنکامر کنید برای تست کادر دایره */
 }
 
 text {
-  /* Using Bellefair, naturally condensed but not vertically scales to avoid glitches */
-  font-family: 'Bellefair', serif;
-  font-size: 60px; 
+  font-family: "Bodoni Moda", serif;
+  font-size: 50px; 
   font-weight: 400;
   fill: black;
   text-anchor: middle;
-  dominant-baseline: middle; 
+  dominant-baseline: central;
+}
+
+.marker {
+  fill: black;
 }
 
 .hand {
   transform-origin: 300px 300px;
   fill: black;
   stroke: black;
-  stroke-linecap: round;
-}
-
-.hour {
-  stroke-width: 3.5;
-}
-
-.minute {
-  stroke-width: 2.5;
+  stroke-width: 0.5;
 }
 
 .second {
-  stroke: black;
   stroke-width: 1.2;
+  fill: none;
 }
 
 .center {
@@ -66,34 +60,35 @@ text {
   <circle cx="300" cy="300" r="5" class="center"/>
 
   <g id="numbers"></g>
+  <g id="markers"></g>
 
-  <path id="hour" class="hand hour"
+  <path id="hour" class="hand"
   d="M300 300
-     C297 285, 297 265, 300 255
-     C303 265, 303 285, 300 300
-     M300 255 L300 180" />
+     L300 280 
+     M300 280 C280 275, 280 250, 300 240 
+     C320 250, 320 275, 300 280
+     M300 240 L300 200" />
 
-  <path id="minute" class="hand minute"
-  d="M300 300
-     C294 270, 294 230, 300 215
-     C306 230, 306 270, 300 300
-     M300 215 L300 120" />
+  <path id="minute" class="hand"
+  d="M300 300 L300 285
+     M300 285 C292 280, 292 265, 300 260
+     C308 265, 308 280, 300 285
+     M300 260 L300 135" />
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="90"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
 </svg>
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const centerX = 300;
 const centerY = 300;
-const radius = 225; // Adjusted radius to ensure a perfect circular layout
+const radiusNumbers = 230; // Balances size and space for numbers
 
 const group = document.getElementById("numbers");
 romans.forEach((num, i) => {
-  // Angle calculated correctly, numbers placed, all-at-once
   const angle = (i * 30 - 90) * Math.PI / 180;
-  const x = centerX + radius * Math.cos(angle);
-  const y = centerY + radius * Math.sin(angle);
+  const x = centerX + radiusNumbers * Math.cos(angle);
+  const y = centerY + radiusNumbers * Math.sin(angle);
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.setAttribute("x", x);
