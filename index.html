@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Classic Rotating Roman Clock</title>
+<title>Classic Roman Clock with Diamonds</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +32,10 @@ text {
   dominant-baseline: central;
 }
 
+.marker {
+  fill: black;
+}
+
 .hand {
   transform-origin: 300px 300px;
   fill: none;
@@ -39,22 +43,10 @@ text {
   stroke-linecap: round;
 }
 
-.hour {
-  stroke-width: 3.5;
-}
-
-.minute {
-  stroke-width: 2.5;
-}
-
-.second {
-  stroke: black;
-  stroke-width: 1.2;
-}
-
-.center {
-  fill: black;
-}
+.hour { stroke-width: 3.5; }
+.minute { stroke-width: 2.5; }
+.second { stroke: black; stroke-width: 1.2; }
+.center { fill: black; }
 </style>
 </head>
 
@@ -64,13 +56,10 @@ text {
   <circle cx="300" cy="300" r="5" class="center"/>
 
   <g id="numbers"></g>
+  <g id="markers"></g>
 
-  <path id="hour" class="hand hour"
-  d="M300 300 L300 210" />
-
-  <path id="minute" class="hand minute"
-  d="M300 300 L300 145" />
-
+  <path id="hour" class="hand hour" d="M300 300 L300 210" />
+  <path id="minute" class="hand minute" d="M300 300 L300 145" />
   <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="110"/>
 </svg>
 
@@ -78,24 +67,44 @@ text {
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const centerX = 300;
 const centerY = 300;
-const radius = 230; 
+const radiusNumbers = 230; 
+const radiusMarkers = 230; 
 
-const group = document.getElementById("numbers");
+const numGroup = document.getElementById("numbers");
+const markGroup = document.getElementById("markers");
 
 romans.forEach((num, i) => {
+  // --- Position and Rotate Numbers ---
   const angleDeg = i * 30; 
   const angleRad = (angleDeg - 90) * Math.PI / 180; 
   
-  const x = centerX + radius * Math.cos(angleRad);
-  const y = centerY + radius * Math.sin(angleRad);
+  const xNum = centerX + radiusNumbers * Math.cos(angleRad);
+  const yNum = centerY + radiusNumbers * Math.sin(angleRad);
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  
-  // Rotating each number correctly while maintaining the classic Bodoni font
-  text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
-  
+  text.setAttribute("transform", `translate(${xNum}, ${yNum}) rotate(${angleDeg})`);
   text.textContent = num;
-  group.appendChild(text);
+  numGroup.appendChild(text);
+
+  // --- Position and Rotate Diamond Markers (Between numbers) ---
+  const markAngleDeg = angleDeg + 15; // Offset by 15 degrees to be between numbers
+  const markAngleRad = (markAngleDeg - 90) * Math.PI / 180;
+
+  const xMark = centerX + radiusMarkers * Math.cos(markAngleRad);
+  const yMark = centerY + radiusMarkers * Math.sin(markAngleRad);
+
+  // Create thin diamond (rhombus)
+  const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  const w = 4;  // Half width (thin)
+  const h = 12; // Half height (long)
+  
+  // Points for a vertical diamond, then we rotate it
+  const points = `0,${-h} ${w},0 0,${h} ${-w},0`;
+  diamond.setAttribute("points", points);
+  diamond.setAttribute("class", "marker");
+  diamond.setAttribute("transform", `translate(${xMark}, ${yMark}) rotate(${markAngleDeg})`);
+  
+  markGroup.appendChild(diamond);
 });
 
 function updateClock() {
