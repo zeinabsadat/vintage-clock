@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Perfect Classic Clock</title>
+<title>Perfect Condensed Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -24,11 +24,12 @@ svg {
 }
 
 text {
-  font-family: 'Bellefair', serif;
-  font-size: 65px; 
+  font-family: 'Antonio', sans-serif;
+  font-size: 70px; 
   fill: black;
   text-anchor: middle;
   dominant-baseline: middle;
+  font-weight: 400;
 }
 
 .hand {
@@ -75,7 +76,7 @@ romans.forEach((num, i) => {
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.textContent = num;
   
-  // Clean rotation logic: translate to point, then rotate around that point
+  // Clean translation and rotation around the calculated point
   text.setAttribute("transform", `translate(${x},${y}) rotate(${angleDeg})`);
   
   group.appendChild(text);
