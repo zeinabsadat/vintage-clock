@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Elegant Vintage Clock v2.1</title>
+<title>Fixed Vintage Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,14 +25,10 @@
 
   text {
     font-family: "Bodoni Moda", serif;
-    font-size: 58px; 
+    font-size: 55px; 
     fill: black;
     text-anchor: middle;
     dominant-baseline: central;
-    /* کشیدگی عمودی اعداد برای ظاهر لوکس‌تر */
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scaleY(1.4);
   }
 
   .marker {
@@ -43,44 +39,42 @@
     transform-origin: 300px 300px;
     fill: black;
     stroke: black;
-    stroke-width: 0.1;
+    stroke-width: 0.2;
   }
 
   .second {
     stroke-width: 1.2;
     fill: none;
   }
-
-  .center-cap {
-    fill: black;
-  }
 </style>
 </head>
 <body>
 
 <svg viewBox="0 0 600 600">
+  <circle cx="300" cy="300" r="4" fill="black"/>
+
   <g id="numbers"></g>
   <g id="markers"></g>
 
   <g id="hour" class="hand">
     <path d="M300 300 
-             C294 298, 288 290, 288 275 
-             C288 255, 300 240, 300 225 
-             C300 240, 312 255, 312 275 
-             C312 290, 306 298, 300 300 Z" />
-    <rect x="299.2" y="195" width="1.6" height="35" /> </g>
+             C292 298, 286 285, 286 270 
+             C286 250, 300 235, 300 220 
+             C300 235, 314 250, 314 270 
+             C314 285, 308 298, 300 300 Z" />
+    <path d="M300 220 L300 185" stroke-width="2.5" />
+  </g>
 
   <g id="minute" class="hand">
     <path d="M300 300 
-             C296 298, 290 288, 290 270 
-             C290 245, 300 225, 300 205 
-             C300 225, 310 245, 310 270 
-             C310 288, 304 298, 300 300 Z" />
-    <rect x="299.4" y="125" width="1.2" height="85" /> </g>
+             C295 298, 290 285, 290 265 
+             C290 240, 300 220, 300 200 
+             C300 220, 310 240, 310 265 
+             C310 285, 305 298, 300 300 Z" />
+    <path d="M300 200 L300 110" stroke-width="2" />
+  </g>
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="90"/>
-  
-  <circle cx="300" cy="300" r="5" class="center-cap"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="85"/>
 </svg>
 
 <script>
@@ -98,12 +92,21 @@
     const x = centerX + radius * Math.cos(angleRad);
     const y = centerY + radius * Math.sin(angleRad);
 
+    // Create text with safe positioning
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
+    text.setAttribute("x", x);
+    text.setAttribute("y", y);
+    // Apply stretch and rotation carefully
+    text.setAttribute("transform", `rotate(${angleDeg}, ${x}, ${y}) scale(1, 1.4)`);
+    // Note: scale here is tricky with absolute coordinates, so we use a simpler approach
+    text.style.transformBox = "fill-box";
+    text.style.transformOrigin = "center";
+    text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`;
+    
     text.textContent = num;
     numGroup.appendChild(text);
 
-    // Slim Diamond Markers between numbers
+    // Slim Diamond Markers
     const mAngleDeg = angleDeg + 15;
     const mAngleRad = (mAngleDeg - 90) * Math.PI / 180;
     const mx = centerX + radius * Math.cos(mAngleRad);
