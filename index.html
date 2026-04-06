@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Full Clock</title>
+<title>Fancy Classic Clock</title>
 
 <style>
 body {
@@ -19,6 +19,7 @@ svg {
   height: 400px;
 }
 
+/* Numbers */
 text {
   font-family: "Times New Roman", serif;
   font-size: 26px;
@@ -27,14 +28,28 @@ text {
   dominant-baseline: middle;
 }
 
+/* Hands */
 .hand {
   transform-origin: 200px 200px;
 }
 
-.hour { stroke: black; stroke-width: 5; stroke-linecap: round; }
-.minute { stroke: black; stroke-width: 3; stroke-linecap: round; }
-.second { stroke: red; stroke-width: 2; }
+.hour {
+  fill: black;
+}
 
+.minute {
+  fill: black;
+}
+
+.second {
+  stroke: red;
+  stroke-width: 2;
+}
+
+/* Center dot */
+.center {
+  fill: black;
+}
 </style>
 </head>
 
@@ -43,19 +58,33 @@ text {
 <svg viewBox="0 0 400 400">
 
   <!-- Center -->
-  <circle cx="200" cy="200" r="5" fill="black"/>
+  <circle cx="200" cy="200" r="5" class="center"/>
 
-  <!-- Roman Numbers -->
+  <!-- Numbers -->
   <g id="numbers"></g>
 
-  <!-- Hands -->
-  <line id="hour" class="hand hour" x1="200" y1="200" x2="200" y2="140"/>
-  <line id="minute" class="hand minute" x1="200" y1="200" x2="200" y2="100"/>
-  <line id="second" class="hand second" x1="200" y1="200" x2="200" y2="80"/>
+  <!-- Fancy Hour Hand -->
+  <path id="hour" class="hand hour"
+  d="M200 200 
+     C190 180, 190 160, 200 150 
+     C210 160, 210 180, 200 200 
+     L200 140 Z" />
+
+  <!-- Fancy Minute Hand -->
+  <path id="minute" class="hand minute"
+  d="M200 200 
+     C185 170, 185 130, 200 110 
+     C215 130, 215 170, 200 200 
+     L200 90 Z" />
+
+  <!-- Second Hand -->
+  <path id="second" class="hand second"
+  d="M200 200 L200 80" />
 
 </svg>
 
 <script>
+// Roman numbers
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const radius = 160;
 const centerX = 200;
@@ -76,6 +105,7 @@ romans.forEach((num, i) => {
   group.appendChild(text);
 });
 
+// Clock logic
 function updateClock() {
   const now = new Date();
 
