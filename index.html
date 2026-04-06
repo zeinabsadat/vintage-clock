@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Classic Rotating Roman Clock</title>
+<title>Classic Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,11 +25,11 @@ svg {
 
 text {
   font-family: "Bodoni Moda", serif;
-  font-size: 55px; 
+  font-size: 60px; 
   font-weight: 400;
   fill: black;
   text-anchor: middle;
-  dominant-baseline: central;
+  dominant-baseline: middle;
 }
 
 .hand {
@@ -97,7 +97,10 @@ romans.forEach((num, i) => {
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   
-  text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg}) scaleY(1.3)`);
+  // First translate to position, then rotate, then scale
+  text.setAttribute("x", x);
+  text.setAttribute("y", y);
+  text.setAttribute("transform", `rotate(${angleDeg}, ${x}, ${y}) scale(1, 1.3)`);
   
   text.textContent = num;
   group.appendChild(text);
