@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ultra Elegant Roman Clock</title>
+<title>Classic Spade-Hand Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -19,40 +19,42 @@ body {
 }
 
 svg {
-  width: 650px;
-  height: 650px;
+  width: 600px;
+  height: 600px;
+  /* background: #f9f9f9; /* آنکامر کنید برای تست کادر دایره */
 }
 
 text {
-  font-family: "Bodoni Moda", serif;
-  font-size: 68px; /* Larger size */
+  /* Using Bellefair, naturally condensed but not vertically scales to avoid glitches */
+  font-family: 'Bellefair', serif;
+  font-size: 60px; 
   font-weight: 400;
   fill: black;
   text-anchor: middle;
-  dominant-baseline: central;
-  /* This creates the 'Extra Tall' look without breaking the SVG math */
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scaleY(1.5); 
-}
-
-.marker {
-  fill: black;
+  dominant-baseline: middle; 
 }
 
 .hand {
   transform-origin: 300px 300px;
   fill: black;
   stroke: black;
-  stroke-width: 0.5;
+  stroke-linecap: round;
+}
+
+.hour {
+  stroke-width: 3.5;
+}
+
+.minute {
+  stroke-width: 2.5;
 }
 
 .second {
+  stroke: black;
   stroke-width: 1.2;
-  fill: none;
 }
 
-.center-cap {
+.center {
   fill: black;
 }
 </style>
@@ -61,63 +63,44 @@ text {
 <body>
 
 <svg viewBox="0 0 600 600">
+  <circle cx="300" cy="300" r="5" class="center"/>
+
   <g id="numbers"></g>
-  <g id="markers"></g>
 
-  <g id="hour" class="hand">
-    <path d="M300 300 L300 280 
-             M300 280 C280 275, 280 250, 300 240 
-             C320 250, 320 275, 300 280
-             M300 240 L300 195" stroke-width="2.5"/>
-    <circle cx="300" cy="265" r="5" fill="white" stroke="black" stroke-width="1"/>
-  </g>
+  <path id="hour" class="hand hour"
+  d="M300 300
+     C297 285, 297 265, 300 255
+     C303 265, 303 285, 300 300
+     M300 255 L300 180" />
 
-  <g id="minute" class="hand">
-    <path d="M300 300 L300 285
-             M300 285 C292 280, 292 265, 300 260
-             C308 265, 308 280, 300 285
-             M300 260 L300 135" stroke-width="2"/>
-    <circle cx="300" cy="275" r="3.5" fill="white" stroke="black" stroke-width="1"/>
-  </g>
+  <path id="minute" class="hand minute"
+  d="M300 300
+     C294 270, 294 230, 300 215
+     C306 230, 306 270, 300 300
+     M300 215 L300 120" />
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
-  
-  <circle cx="300" cy="300" r="6" class="center-cap"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="90"/>
 </svg>
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const centerX = 300;
 const centerY = 300;
-const radius = 225; 
+const radius = 225; // Adjusted radius to ensure a perfect circular layout
 
-const numGroup = document.getElementById("numbers");
-const markGroup = document.getElementById("markers");
-
+const group = document.getElementById("numbers");
 romans.forEach((num, i) => {
-  const angleDeg = i * 30; 
-  const angleRad = (angleDeg - 90) * Math.PI / 180; 
-  const x = centerX + radius * Math.cos(angleRad);
-  const y = centerY + radius * Math.sin(angleRad);
+  // Angle calculated correctly, numbers placed, all-at-once
+  const angle = (i * 30 - 90) * Math.PI / 180;
+  const x = centerX + radius * Math.cos(angle);
+  const y = centerY + radius * Math.sin(angle);
 
-  // Add Number
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
+  text.setAttribute("x", x);
+  text.setAttribute("y", y);
   text.textContent = num;
-  numGroup.appendChild(text);
 
-  // Add Slim Diamond Marker
-  const markAngleDeg = angleDeg + 15;
-  const markAngleRad = (markAngleDeg - 90) * Math.PI / 180;
-  const xM = centerX + radius * Math.cos(markAngleRad);
-  const yM = centerY + radius * Math.sin(markAngleRad);
-
-  const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-  // Very thin and long diamond points
-  diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
-  diamond.setAttribute("class", "marker");
-  diamond.setAttribute("transform", `translate(${xM}, ${yM}) rotate(${markAngleDeg})`);
-  markGroup.appendChild(diamond);
+  group.appendChild(text);
 });
 
 function updateClock() {
@@ -126,9 +109,13 @@ function updateClock() {
   const min = now.getMinutes();
   const hr = now.getHours();
 
-  document.getElementById("second").style.transform = `rotate(${sec * 6}deg)`;
-  document.getElementById("minute").style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;
-  document.getElementById("hour").style.transform = `rotate(${(hr % 12) * 30 + min * 0.5}deg)`;
+  const secDeg = sec * 6;
+  const minDeg = min * 6 + sec * 0.1;
+  const hrDeg = (hr % 12) * 30 + min * 0.5;
+
+  document.getElementById("second").style.transform = `rotate(${secDeg}deg)`;
+  document.getElementById("minute").style.transform = `rotate(${minDeg}deg)`;
+  document.getElementById("hour").style.transform = `rotate(${hrDeg}deg)`;
 }
 
 setInterval(updateClock, 1000);
