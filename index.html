@@ -2,30 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fixed Vintage Clock - No Top Space</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
-
 <style>
   body {
-    display: flex;
-    justify-content: center;
-    /* تغییر از center به flex-start برای حذف فاصله بالا */
-    align-items: flex-start; 
-    min-height: 100vh;
-    background: white;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    background: transparent;
+    overflow: hidden;
   }
 
   svg {
-    width: 600px;
-    height: 600px;
-    /* حذف فضاهای پنهان اطراف SVG */
+    width: 100vw;
+    height: auto;
+    max-width: 550px;
     display: block;
-    margin-top: -50px; 
   }
 
   text {
@@ -36,57 +28,50 @@
     dominant-baseline: central;
   }
 
-  .marker {
-    fill: black;
-  }
-
   .hand {
-    transform-origin: 300px 300px;
+    transform-origin: 300px 260px; 
     fill: black;
     stroke: black;
     stroke-width: 0.2;
   }
 
-  .second {
-    stroke-width: 1.2;
-    fill: none;
-  }
+  .second { stroke-width: 1.2; fill: none; }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<svg viewBox="0 0 600 600">
-  <circle cx="300" cy="300" r="4" fill="black"/>
-
+<svg viewBox="0 0 600 520">
   <g id="numbers"></g>
   <g id="markers"></g>
 
   <g id="hour" class="hand">
-    <path d="M300 300 
-             C292 298, 286 285, 286 270 
-             C286 250, 300 235, 300 220 
-             C300 235, 314 250, 314 270 
-             C314 285, 308 298, 300 300 Z" />
-    <path d="M300 220 L300 185" stroke-width="2.5" />
+    <path d="M300 260 
+             C292 258, 286 245, 286 230 
+             C286 210, 300 195, 300 180 
+             C300 195, 314 210, 314 230 
+             C314 245, 308 258, 300 260 Z" />
+    <path d="M300 180 L300 145" stroke-width="2.5" />
   </g>
 
   <g id="minute" class="hand">
-    <path d="M300 300 
-             C295 298, 290 285, 290 265 
-             C290 240, 300 220, 300 200 
-             C300 220, 310 240, 310 265 
-             C310 285, 305 298, 300 300 Z" />
-    <path d="M300 200 L300 110" stroke-width="2" />
+    <path d="M300 260 
+             C295 258, 290 245, 290 225 
+             C290 200, 300 180, 300 160 
+             C300 180, 310 200, 310 225 
+             C310 245, 305 258, 300 260 Z" />
+    <path d="M300 160 L300 70" stroke-width="2" />
   </g>
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="85"/>
+  <line id="second" class="hand second" x1="300" y1="260" x2="300" y2="45"/>
+  <circle cx="300" cy="260" r="5" fill="black"/>
 </svg>
 
 <script>
   const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
   const centerX = 300;
-  const centerY = 300;
-  const radius = 230; 
+  const centerY = 260; 
+  const radius = 210; 
 
   const numGroup = document.getElementById("numbers");
   const markGroup = document.getElementById("markers");
@@ -100,14 +85,13 @@
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", x);
     text.setAttribute("y", y);
-    text.style.transformBox = "fill-box";
-    text.style.transformOrigin = "center";
-    text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`; // کشیدگی عمودی اعداد
+    text.style.transformOrigin = `${x}px ${y}px`;
+    text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`;
     
     text.textContent = num;
     numGroup.appendChild(text);
 
-    // Slim Diamond Markers
+   
     const mAngleDeg = angleDeg + 15;
     const mAngleRad = (mAngleDeg - 90) * Math.PI / 180;
     const mx = centerX + radius * Math.cos(mAngleRad);
@@ -115,8 +99,8 @@
 
     const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
-    diamond.setAttribute("class", "marker");
     diamond.setAttribute("transform", `translate(${mx}, ${my}) rotate(${mAngleDeg})`);
+    diamond.setAttribute("fill", "black");
     markGroup.appendChild(diamond);
   });
 
@@ -134,6 +118,5 @@
   setInterval(updateClock, 1000);
   updateClock();
 </script>
-
 </body>
 </html>
