@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Elegant Clock with Diamond Markers</title>
+<title>Elegant Clock with Large Numbers</title>
 
 <style>
 body {
@@ -15,33 +15,34 @@ body {
 }
 
 svg {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
 }
 
 text {
   font-family: "Times New Roman", serif;
-  font-size: 26px;
+  font-size: 42px; /* Increased font size */
   fill: black;
   text-anchor: middle;
   dominant-baseline: middle;
+  font-weight: bold;
 }
 
 .hand {
-  transform-origin: 200px 200px;
+  transform-origin: 250px 250px;
 }
 
 .hour {
   fill: none;
   stroke: black;
-  stroke-width: 4;
+  stroke-width: 5;
   stroke-linecap: round;
 }
 
 .minute {
   fill: none;
   stroke: black;
-  stroke-width: 3;
+  stroke-width: 3.5;
   stroke-linecap: round;
 }
 
@@ -62,32 +63,32 @@ text {
 
 <body>
 
-<svg viewBox="0 0 400 400">
-  <circle cx="200" cy="200" r="4" class="center"/>
+<svg viewBox="0 0 500 500">
+  <circle cx="250" cy="250" r="6" class="center"/>
 
   <g id="numbers"></g>
   <g id="markers"></g>
 
   <path id="hour" class="hand hour"
-  d="M200 200
-     C195 185, 195 170, 200 160
-     C205 170, 205 185, 200 200
-     M200 160 L200 135" />
+  d="M250 250
+     C245 235, 245 220, 250 210
+     C255 220, 255 235, 250 250
+     M250 210 L250 170" />
 
   <path id="minute" class="hand minute"
-  d="M200 200
-     C193 175, 193 140, 200 120
-     C207 140, 207 175, 200 200
-     M200 120 L200 90" />
+  d="M250 250
+     C243 225, 243 190, 250 170
+     C257 190, 257 225, 250 250
+     M250 170 L250 120" />
 
-  <line id="second" class="hand second" x1="200" y1="200" x2="200" y2="80"/>
+  <line id="second" class="hand second" x1="250" y1="250" x2="250" y2="100"/>
 </svg>
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-const radius = 160;
-const centerX = 200;
-const centerY = 200;
+const radius = 190; 
+const centerX = 250;
+const centerY = 250;
 
 const group = document.getElementById("numbers");
 romans.forEach((num, i) => {
@@ -104,9 +105,9 @@ romans.forEach((num, i) => {
 });
 
 const markerGroup = document.getElementById("markers");
-const markerRadius = 160; 
-const dW = 6; 
-const dH = 10;
+const markerRadius = 200; 
+const dW = 7; 
+const dH = 12;
 
 for (let i = 0; i < 12; i++) {
   const angle = (i * 30 - 75) * Math.PI / 180;
