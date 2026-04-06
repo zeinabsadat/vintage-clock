@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Refined Classic Roman Clock</title>
+<title>Perfect Circle Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,18 +21,19 @@ body {
 svg {
   width: 600px;
   height: 600px;
+  /* background: #f9f9f9; /* آنکامر کنید برای تست کادر دایره */
 }
 
 text {
   font-family: "Bodoni Moda", serif;
-  font-size: 58px; /* Slightly reduced to fit perfectly in circle */
+  font-size: 50px; 
   font-weight: 400;
   fill: black;
   text-anchor: middle;
-  dominant-baseline: middle;
+  dominant-baseline: central; /* تنظیم دقیق مرکز عمودی */
+  transform-box: fill-box;
   transform-origin: center;
-  /* Keeping the elegant vertical stretch */
-  transform: scaleY(1.2); 
+  transform: scaleY(1.3); /* کشیدگی کلاسیک */
 }
 
 .hand {
@@ -43,12 +44,11 @@ text {
 }
 
 .hour {
-  /* Reduced thickness to match the elegant look */
   stroke-width: 3.5;
 }
 
 .minute {
-  stroke-width: 3;
+  stroke-width: 2.5;
 }
 
 .second {
@@ -65,39 +65,41 @@ text {
 <body>
 
 <svg viewBox="0 0 600 600">
-  <circle cx="300" cy="300" r="5" class="center"/>
+  <circle cx="300" cy="300" r="4" class="center"/>
 
   <g id="numbers"></g>
 
   <path id="hour" class="hand hour"
   d="M300 300
-     C297 285, 297 265, 300 255
-     C303 265, 303 285, 300 300
-     M300 255 L300 210" />
+     C298 285, 298 265, 300 255
+     C302 265, 302 285, 300 300
+     M300 255 L300 215" />
 
   <path id="minute" class="hand minute"
   d="M300 300
-     C294 270, 294 230, 300 215
-     C306 230, 306 270, 300 300
-     M300 215 L300 140" />
+     C295 270, 295 230, 300 215
+     C305 230, 305 270, 300 300
+     M300 215 L300 150" />
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="110"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="120"/>
 </svg>
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const centerX = 300;
 const centerY = 300;
-const radius = 220; // Adjusted radius to ensure a perfect circular layout
+const radius = 220; 
 
 const group = document.getElementById("numbers");
+
 romans.forEach((num, i) => {
   const angle = (i * 30 - 90) * Math.PI / 180;
+  
+  // محاسبه دقیق نقاط روی محیط دایره
   const x = centerX + radius * Math.cos(angle);
   const y = centerY + radius * Math.sin(angle);
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  // Using transform for position to better handle the scaleY effect
   text.setAttribute("x", x);
   text.setAttribute("y", y);
   text.textContent = num;
