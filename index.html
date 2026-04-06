@@ -2,58 +2,60 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Classic Spade and Loop Hand Clock</title>
+<title>Elegant Vintage Clock v2.1</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
 
 <style>
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: white;
-  margin: 0;
-}
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: white;
+    margin: 0;
+  }
 
-svg {
-  width: 600px;
-  height: 600px;
-}
+  svg {
+    width: 600px;
+    height: 600px;
+  }
 
-text {
-  font-family: "Bodoni Moda", serif;
-  font-size: 50px; 
-  font-weight: 400;
-  fill: black;
-  text-anchor: middle;
-  dominant-baseline: central;
-}
+  text {
+    font-family: "Bodoni Moda", serif;
+    font-size: 58px; 
+    fill: black;
+    text-anchor: middle;
+    dominant-baseline: central;
+    /* کشیدگی عمودی اعداد برای ظاهر لوکس‌تر */
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scaleY(1.4);
+  }
 
-.marker {
-  fill: black;
-}
+  .marker {
+    fill: black;
+  }
 
-.hand {
-  transform-origin: 300px 300px;
-  fill: black;
-  stroke: black;
-  stroke-width: 0.1;
-}
+  .hand {
+    transform-origin: 300px 300px;
+    fill: black;
+    stroke: black;
+    stroke-width: 0.1;
+  }
 
-.second {
-  stroke-width: 1.2;
-  fill: none;
-}
+  .second {
+    stroke-width: 1.2;
+    fill: none;
+  }
 
-.center-cap {
-  fill: black;
-}
+  .center-cap {
+    fill: black;
+  }
 </style>
 </head>
-
 <body>
 
 <svg viewBox="0 0 600 600">
@@ -61,72 +63,72 @@ text {
   <g id="markers"></g>
 
   <g id="hour" class="hand">
-    <path d="M300 300
-             L300 280 
-             M300 280 C280 275, 280 250, 300 240 
-             C320 250, 320 275, 300 280
-             M300 240 L300 200" />
-  </g>
+    <path d="M300 300 
+             C294 298, 288 290, 288 275 
+             C288 255, 300 240, 300 225 
+             C300 240, 312 255, 312 275 
+             C312 290, 306 298, 300 300 Z" />
+    <rect x="299.2" y="195" width="1.6" height="35" /> </g>
 
   <g id="minute" class="hand">
-    <path d="M300 300 L300 285
-             M300 285 C292 280, 292 265, 300 260
-             C308 265, 308 280, 300 285
-             M300 260 L300 135" />
-    <circle cx="300" cy="275" r="3.5" fill="white" stroke="black" stroke-width="0.7"/>
-  </g>
+    <path d="M300 300 
+             C296 298, 290 288, 290 270 
+             C290 245, 300 225, 300 205 
+             C300 225, 310 245, 310 270 
+             C310 288, 304 298, 300 300 Z" />
+    <rect x="299.4" y="125" width="1.2" height="85" /> </g>
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="90"/>
   
   <circle cx="300" cy="300" r="5" class="center-cap"/>
 </svg>
 
 <script>
-const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-const centerX = 300;
-const centerY = 300;
-const radius = 230; 
+  const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
+  const centerX = 300;
+  const centerY = 300;
+  const radius = 230; 
 
-const numGroup = document.getElementById("numbers");
-const markGroup = document.getElementById("markers");
+  const numGroup = document.getElementById("numbers");
+  const markGroup = document.getElementById("markers");
 
-romans.forEach((num, i) => {
-  const angleDeg = i * 30; 
-  const angleRad = (angleDeg - 90) * Math.PI / 180; 
-  const xNum = centerX + radius * Math.cos(angleRad);
-  const yNum = centerY + radius * Math.sin(angleRad);
+  romans.forEach((num, i) => {
+    const angleDeg = i * 30; 
+    const angleRad = (angleDeg - 90) * Math.PI / 180; 
+    const x = centerX + radius * Math.cos(angleRad);
+    const y = centerY + radius * Math.sin(angleRad);
 
-  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  text.setAttribute("transform", `translate(${xNum}, ${yNum}) rotate(${angleDeg})`);
-  text.textContent = num;
-  numGroup.appendChild(text);
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
+    text.textContent = num;
+    numGroup.appendChild(text);
 
-  // Slim Diamond Markers between numbers
-  const markAngleDeg = angleDeg + 15;
-  const markAngleRad = (markAngleDeg - 90) * Math.PI / 180;
-  const mx = centerX + radius * Math.cos(markAngleRad);
-  const my = centerY + radius * Math.sin(markAngleRad);
+    // Slim Diamond Markers between numbers
+    const mAngleDeg = angleDeg + 15;
+    const mAngleRad = (mAngleDeg - 90) * Math.PI / 180;
+    const mx = centerX + radius * Math.cos(mAngleRad);
+    const my = centerY + radius * Math.sin(mAngleRad);
 
-  const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-  diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
-  diamond.setAttribute("class", "marker");
-  diamond.setAttribute("transform", `translate(${mx}, ${my}) rotate(${markAngleDeg})`);
-  markGroup.appendChild(diamond);
-});
+    const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
+    diamond.setAttribute("class", "marker");
+    diamond.setAttribute("transform", `translate(${mx}, ${my}) rotate(${mAngleDeg})`);
+    markGroup.appendChild(diamond);
+  });
 
-function updateClock() {
-  const now = new Date();
-  const sec = now.getSeconds();
-  const min = now.getMinutes();
-  const hr = now.getHours();
+  function updateClock() {
+    const now = new Date();
+    const sec = now.getSeconds();
+    const min = now.getMinutes();
+    const hr = now.getHours();
 
-  document.getElementById("second").style.transform = `rotate(${sec * 6}deg)`;
-  document.getElementById("minute").style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;
-  document.getElementById("hour").style.transform = `rotate(${(hr % 12) * 30 + min * 0.5}deg)`;
-}
+    document.getElementById("second").style.transform = `rotate(${sec * 6}deg)`;
+    document.getElementById("minute").style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;
+    document.getElementById("hour").style.transform = `rotate(${(hr % 12) * 30 + min * 0.5}deg)`;
+  }
 
-setInterval(updateClock, 1000);
-updateClock();
+  setInterval(updateClock, 1000);
+  updateClock();
 </script>
 
 </body>
