@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Elegant Roman Clock with Condensed Numbers</title>
+<title>Clean Roman Clock with Condensed Font</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,13 +24,12 @@ svg {
 }
 
 text {
-  /* Applying the new condensed, elegant serif font */
+  /* Retaining the condensed, elegant Playfair Display font */
   font-family: "Playfair Display", serif;
-  font-size: 50px; /* Large font size */
+  font-size: 55px; /* Slightly larger for a bold presence */
   font-weight: 300; /* Light weight for the "thin" look */
   text-transform: uppercase;
-  letter-spacing: -2px; /* Slight condensed effect on letters */
-  transform: scaleY(1.3); /* Stretching vertically for the "tall" look */
+  letter-spacing: -2px; /* Condensed letter-spacing */
   fill: black;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -62,10 +61,6 @@ text {
 .center {
   fill: black;
 }
-
-.marker {
-  fill: black;
-}
 </style>
 </head>
 
@@ -75,7 +70,6 @@ text {
   <circle cx="250" cy="250" r="6" class="center"/>
 
   <g id="numbers"></g>
-  <g id="markers"></g>
 
   <path id="hour" class="hand hour"
   d="M250 250
@@ -94,12 +88,13 @@ text {
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-const radius = 195; 
 const centerX = 250;
 const centerY = 250;
+const radius = 205; // Set the radius for the numbers
 
 const group = document.getElementById("numbers");
 romans.forEach((num, i) => {
+  // Angle calculated correctly, numbers placed, all-at-once
   const angle = (i * 30 - 90) * Math.PI / 180;
   const x = centerX + radius * Math.cos(angle);
   const y = centerY + radius * Math.sin(angle);
@@ -112,27 +107,7 @@ romans.forEach((num, i) => {
   group.appendChild(text);
 });
 
-const markerGroup = document.getElementById("markers");
-const markerRadius = 200; 
-const dW = 7; 
-const dH = 12;
-
-for (let i = 0; i < 12; i++) {
-  const angle = (i * 30 - 75) * Math.PI / 180;
-  const x = centerX + markerRadius * Math.cos(angle);
-  const y = centerY + markerRadius * Math.sin(angle);
-
-  const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-  
-  const p1 = `${x},${y - dH}`;
-  const p2 = `${x + dW},${y}`;
-  const p3 = `${x},${y + dH}`;
-  const p4 = `${x - dW},${y}`;
-  
-  polygon.setAttribute("points", `${p1} ${p2} ${p3} ${p4}`);
-  polygon.classList.add("marker");
-  markerGroup.appendChild(polygon);
-}
+// Markers (Diamonds) have been entirely removed.
 
 function updateClock() {
   const now = new Date();
