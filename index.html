@@ -1,139 +1,118 @@
 <!DOCTYPE html>
-<html lang="fa" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roman Clock</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f0f0f0;
-    }
+<meta charset="UTF-8">
+<title>Classic SVG Clock</title>
 
-    .clock {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      background: white;
-      border: 18px solid #1a1a1a;
-      border-radius: 50%;
-      box-shadow: 0 0 30px rgba(0,0,0,0.4);
-    }
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #eee;
+  margin: 0;
+}
 
-    .number {
-      position: absolute;
-      font-size: 32px;
-      font-weight: bold;
-      color: #1a1a1a;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
+svg {
+  width: 400px;
+  height: 400px;
+}
 
-    .hand {
-      position: absolute;
-      left: 50%;
-      bottom: 50%;
-      transform-origin: bottom center;
-      border-radius: 50px;
-      transition: transform 0.05s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+text {
+  font-family: "Times New Roman", serif;
+  font-size: 28px;
+  fill: black;
+}
 
-    .hour-hand {
-      width: 8px;
-      height: 110px;
-      background: #1a1a1a;
-      margin-left: -4px;
-      z-index: 3;
-    }
+.hand {
+  transform-origin: 200px 200px;
+  transform: rotate(0deg);
+}
 
-    .minute-hand {
-      width: 6px;
-      height: 150px;
-      background: #333;
-      margin-left: -3px;
-      z-index: 4;
-    }
+.hour {
+  stroke: black;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
 
-    .second-hand {
-      width: 3px;
-      height: 160px;
-      background: #e74c3c;
-      margin-left: -1.5px;
-      z-index: 5;
-    }
+.minute {
+  stroke: black;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
 
-    .center-dot {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #1a1a1a;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
+.second {
+  stroke: red;
+  stroke-width: 2;
+}
 
-    .num12 { top: 25px; left: 50%; transform: translateX(-50%); }
-    .num1  { top: 65px; right: 70px; }
-    .num2  { top: 130px; right: 35px; }
-    .num3  { top: 50%; right: 20px; transform: translateY(-50%); }
-    .num4  { bottom: 130px; right: 35px; }
-    .num5  { bottom: 65px; right: 70px; }
-    .num6  { bottom: 25px; left: 50%; transform: translateX(-50%); }
-    .num7  { bottom: 65px; left: 70px; }
-    .num8  { bottom: 130px; left: 35px; }
-    .num9  { top: 50%; left: 20px; transform: translateY(-50%); }
-    .num10 { top: 130px; left: 35px; }
-    .num11 { top: 65px; left: 70px; }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <div class="clock" id="clock">
-    <div class="number num12">XII</div>
-    <div class="number num1">I</div>
-    <div class="number num2">II</div>
-    <div class="number num3">III</div>
-    <div class="number num4">IV</div>
-    <div class="number num5">V</div>
-    <div class="number num6">VI</div>
-    <div class="number num7">VII</div>
-    <div class="number num8">VIII</div>
-    <div class="number num9">IX</div>
-    <div class="number num10">X</div>
-    <div class="number num11">XI</div>
+<svg viewBox="0 0 400 400">
 
-    <div class="hand hour-hand" id="hour"></div>
-    <div class="hand minute-hand" id="minute"></div>
-    <div class="hand second-hand" id="second"></div>
-    <div class="center-dot"></div>
-  </div>
+  <!-- Center -->
+  <circle cx="200" cy="200" r="5" fill="black"/>
 
-  <script>
-    function updateClock() {
-      const now = new Date();
+  <!-- Roman Numbers -->
+  <g text-anchor="middle">
+    <text x="200" y="40">XII</text>
+    <text x="300" y="80">I</text>
+    <text x="350" y="200">II</text>
+    <text x="300" y="320">III</text>
+    <text x="200" y="370">VI</text>
+    <text x="100" y="320">VII</text>
+    <text x="50" y="200">IX</text>
+    <text x="100" y="80">XI</text>
+  </g>
 
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
+  <!-- Decorative ticks -->
+  <g stroke="black">
+    <line x1="200" y1="60" x2="200" y2="80"/>
+    <line x1="300" y1="100" x2="285" y2="115"/>
+    <line x1="340" y1="200" x2="320" y2="200"/>
+    <line x1="300" y1="300" x2="285" y2="285"/>
+    <line x1="200" y1="340" x2="200" y2="320"/>
+    <line x1="100" y1="300" x2="115" y2="285"/>
+    <line x1="60" y1="200" x2="80" y2="200"/>
+    <line x1="100" y1="100" x2="115" y2="115"/>
+  </g>
 
-      const secondDeg = (seconds * 6);
-      const minuteDeg = (minutes * 6) + (seconds * 0.1);
-      const hourDeg   = (hours % 12 * 30) + (minutes * 0.5);
+  <!-- Hands -->
+  <line id="hour" class="hand hour" x1="200" y1="200" x2="200" y2="140"/>
+  <line id="minute" class="hand minute" x1="200" y1="200" x2="200" y2="100"/>
+  <line id="second" class="hand second" x1="200" y1="200" x2="200" y2="80"/>
 
-      document.getElementById('second').style.transform = `rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform = `rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform   = `rotate(${hourDeg}deg)`;
-    }
+</svg>
 
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
+<script>
+function updateClock() {
+  const now = new Date();
+
+  const sec = now.getSeconds();
+  const min = now.getMinutes();
+  const hr = now.getHours();
+
+  const secDeg = sec * 6;
+  const minDeg = min * 6 + sec * 0.1;
+  const hrDeg = (hr % 12) * 30 + min * 0.5;
+
+  document.getElementById("second").style.transform =
+    `rotate(${secDeg}deg)`;
+
+  document.getElementById("minute").style.transform =
+    `rotate(${minDeg}deg)`;
+
+  document.getElementById("hour").style.transform =
+    `rotate(${hrDeg}deg)`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+</script>
 
 </body>
 </html>
