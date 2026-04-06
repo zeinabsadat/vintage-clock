@@ -1,96 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Classic Clock</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #f4f4f4;
-      margin: 0;
-    }
+<meta charset="UTF-8">
+<title>Elegant Clock</title>
 
-    .clock {
-      width: 300px;
-      height: 300px;
-      border: 8px solid black;
-      border-radius: 50%;
-      position: relative;
-      background: white;
-    }
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #eee;
+  margin: 0;
+}
 
-    .number {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      transform: rotate(var(--rotation));
-    }
+.clock {
+  width: 320px;
+  height: 320px;
+  border: 10px solid black;
+  border-radius: 50%;
+  position: relative;
+  background: white;
+}
 
-    .number span {
-      display: block;
-      transform: rotate(calc(-1 * var(--rotation)));
-    }
+/* Roman Numbers */
+.number {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-family: "Times New Roman", serif;
+  font-size: 22px;
+  transform: rotate(var(--rotation));
+}
 
-    .number1 { --rotation: 30deg; }
-    .number2 { --rotation: 60deg; }
-    .number3 { --rotation: 90deg; }
-    .number4 { --rotation: 120deg; }
-    .number5 { --rotation: 150deg; }
-    .number6 { --rotation: 180deg; }
-    .number7 { --rotation: 210deg; }
-    .number8 { --rotation: 240deg; }
-    .number9 { --rotation: 270deg; }
-    .number10 { --rotation: 300deg; }
-    .number11 { --rotation: 330deg; }
-    .number12 { --rotation: 0deg; }
+.number span {
+  display: block;
+  transform: rotate(calc(-1 * var(--rotation)));
+  margin-top: 10px;
+}
 
-    .hand {
-      position: absolute;
-      bottom: 50%;
-      left: 50%;
-      transform-origin: bottom;
-      transform: translateX(-50%) rotate(0deg);
-    }
+/* Positions */
+.number1 { --rotation: 30deg; }
+.number2 { --rotation: 60deg; }
+.number3 { --rotation: 90deg; }
+.number4 { --rotation: 120deg; }
+.number5 { --rotation: 150deg; }
+.number6 { --rotation: 180deg; }
+.number7 { --rotation: 210deg; }
+.number8 { --rotation: 240deg; }
+.number9 { --rotation: 270deg; }
+.number10 { --rotation: 300deg; }
+.number11 { --rotation: 330deg; }
+.number12 { --rotation: 0deg; }
 
-    .hand.hour {
-      width: 6px;
-      height: 70px;
-      background: black;
-    }
+/* Hands */
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  transform: translateX(-50%) rotate(0deg);
+  border-radius: 10px;
+}
 
-    .hand.minute {
-      width: 4px;
-      height: 100px;
-      background: black;
-    }
+.hour {
+  width: 6px;
+  height: 70px;
+  background: black;
+}
 
-    .hand.second {
-      width: 2px;
-      height: 120px;
-      background: red;
-    }
+.minute {
+  width: 4px;
+  height: 100px;
+  background: black;
+}
 
-    .center {
-      width: 10px;
-      height: 10px;
-      background: black;
-      border-radius: 50%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  </style>
+.second {
+  width: 2px;
+  height: 120px;
+  background: red;
+}
+
+/* Center dot */
+.center {
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="clock">
+
   <div class="number number1"><span>I</span></div>
   <div class="number number2"><span>II</span></div>
   <div class="number number3"><span>III</span></div>
@@ -109,32 +119,33 @@
   <div class="hand second" id="second"></div>
 
   <div class="center"></div>
+
 </div>
 
 <script>
-  function setClock() {
-    const now = new Date();
+function updateClock() {
+  const now = new Date();
 
-    const seconds = now.getSeconds();
-    const minutes = now.getMinutes();
-    const hours = now.getHours();
+  const sec = now.getSeconds();
+  const min = now.getMinutes();
+  const hr = now.getHours();
 
-    const secondDeg = seconds * 6;
-    const minuteDeg = minutes * 6 + seconds * 0.1;
-    const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+  const secDeg = sec * 6;
+  const minDeg = min * 6 + sec * 0.1;
+  const hrDeg = (hr % 12) * 30 + min * 0.5;
 
-    document.getElementById("second").style.transform =
-      `translateX(-50%) rotate(${secondDeg}deg)`;
+  document.getElementById("second").style.transform =
+    `translateX(-50%) rotate(${secDeg}deg)`;
 
-    document.getElementById("minute").style.transform =
-      `translateX(-50%) rotate(${minuteDeg}deg)`;
+  document.getElementById("minute").style.transform =
+    `translateX(-50%) rotate(${minDeg}deg)`;
 
-    document.getElementById("hour").style.transform =
-      `translateX(-50%) rotate(${hourDeg}deg)`;
-  }
+  document.getElementById("hour").style.transform =
+    `translateX(-50%) rotate(${hrDeg}deg)`;
+}
 
-  setClock();
-  setInterval(setClock, 1000);
+setInterval(updateClock, 1000);
+updateClock();
 </script>
 
 </body>
