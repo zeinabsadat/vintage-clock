@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fixed Vintage Clock</title>
+<title>Fixed Vintage Clock - No Top Space</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,15 +12,20 @@
   body {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    /* تغییر از center به flex-start برای حذف فاصله بالا */
+    align-items: flex-start; 
+    min-height: 100vh;
     background: white;
     margin: 0;
+    padding: 0;
   }
 
   svg {
     width: 600px;
     height: 600px;
+    /* حذف فضاهای پنهان اطراف SVG */
+    display: block;
+    margin-top: -50px; 
   }
 
   text {
@@ -92,16 +97,12 @@
     const x = centerX + radius * Math.cos(angleRad);
     const y = centerY + radius * Math.sin(angleRad);
 
-    // Create text with safe positioning
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", x);
     text.setAttribute("y", y);
-    // Apply stretch and rotation carefully
-    text.setAttribute("transform", `rotate(${angleDeg}, ${x}, ${y}) scale(1, 1.4)`);
-    // Note: scale here is tricky with absolute coordinates, so we use a simpler approach
     text.style.transformBox = "fill-box";
     text.style.transformOrigin = "center";
-    text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`;
+    text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`; // کشیدگی عمودی اعداد
     
     text.textContent = num;
     numGroup.appendChild(text);
