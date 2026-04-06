@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fancy Classic Clock</title>
+<title>Elegant Clock</title>
 
 <style>
 body {
@@ -19,7 +19,6 @@ svg {
   height: 400px;
 }
 
-/* Numbers */
 text {
   font-family: "Times New Roman", serif;
   font-size: 26px;
@@ -28,25 +27,30 @@ text {
   dominant-baseline: middle;
 }
 
-/* Hands */
 .hand {
   transform-origin: 200px 200px;
 }
 
+/* ✨ ظریف و شیک */
 .hour {
-  fill: black;
+  fill: none;
+  stroke: black;
+  stroke-width: 3;
+  stroke-linecap: round;
 }
 
 .minute {
-  fill: black;
+  fill: none;
+  stroke: black;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .second {
   stroke: red;
-  stroke-width: 2;
+  stroke-width: 1.5;
 }
 
-/* Center dot */
 .center {
   fill: black;
 }
@@ -57,34 +61,33 @@ text {
 
 <svg viewBox="0 0 400 400">
 
-  <!-- Center -->
-  <circle cx="200" cy="200" r="5" class="center"/>
+  <!-- center -->
+  <circle cx="200" cy="200" r="4" class="center"/>
 
-  <!-- Numbers -->
+  <!-- numbers -->
   <g id="numbers"></g>
 
-  <!-- Fancy Hour Hand -->
+  <!-- ✨ Elegant Hour Hand -->
   <path id="hour" class="hand hour"
-  d="M200 200 
-     C190 180, 190 160, 200 150 
-     C210 160, 210 180, 200 200 
-     L200 140 Z" />
+  d="M200 200
+     C195 185, 195 170, 200 160
+     C205 170, 205 185, 200 200
+     M200 160 L200 135" />
 
-  <!-- Fancy Minute Hand -->
+  <!-- ✨ Elegant Minute Hand -->
   <path id="minute" class="hand minute"
-  d="M200 200 
-     C185 170, 185 130, 200 110 
-     C215 130, 215 170, 200 200 
-     L200 90 Z" />
+  d="M200 200
+     C193 175, 193 140, 200 120
+     C207 140, 207 175, 200 200
+     M200 120 L200 90" />
 
-  <!-- Second Hand -->
-  <path id="second" class="hand second"
-  d="M200 200 L200 80" />
+  <!-- ✨ Thin Second -->
+  <line id="second" class="hand second"
+        x1="200" y1="200" x2="200" y2="80"/>
 
 </svg>
 
 <script>
-// Roman numbers
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const radius = 160;
 const centerX = 200;
@@ -105,7 +108,6 @@ romans.forEach((num, i) => {
   group.appendChild(text);
 });
 
-// Clock logic
 function updateClock() {
   const now = new Date();
 
