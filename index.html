@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ultra Classic Roman Clock</title>
+<title>Refined Classic Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,36 +25,35 @@ svg {
 
 text {
   font-family: "Bodoni Moda", serif;
-  font-size: 65px; /* Large and readable */
+  font-size: 58px; /* Slightly reduced to fit perfectly in circle */
   font-weight: 400;
   fill: black;
   text-anchor: middle;
   dominant-baseline: middle;
-  /* Stretching slightly for that extra tall antique look */
-  transform: scaleY(1.2);
+  transform-origin: center;
+  /* Keeping the elegant vertical stretch */
+  transform: scaleY(1.2); 
 }
 
 .hand {
   transform-origin: 300px 300px;
+  fill: none;
+  stroke: black;
+  stroke-linecap: round;
 }
 
 .hour {
-  fill: none;
-  stroke: black;
-  stroke-width: 6;
-  stroke-linecap: round;
+  /* Reduced thickness to match the elegant look */
+  stroke-width: 3.5;
 }
 
 .minute {
-  fill: none;
-  stroke: black;
-  stroke-width: 4;
-  stroke-linecap: round;
+  stroke-width: 3;
 }
 
 .second {
-  stroke: #222;
-  stroke-width: 1.5;
+  stroke: black;
+  stroke-width: 1.2;
 }
 
 .center {
@@ -66,30 +65,30 @@ text {
 <body>
 
 <svg viewBox="0 0 600 600">
-  <circle cx="300" cy="300" r="7" class="center"/>
+  <circle cx="300" cy="300" r="5" class="center"/>
 
   <g id="numbers"></g>
 
   <path id="hour" class="hand hour"
   d="M300 300
-     C295 280, 295 260, 300 250
-     C305 260, 305 280, 300 300
-     M300 250 L300 200" />
+     C297 285, 297 265, 300 255
+     C303 265, 303 285, 300 300
+     M300 255 L300 210" />
 
   <path id="minute" class="hand minute"
   d="M300 300
-     C290 260, 290 220, 300 200
-     C310 220, 310 260, 300 300
-     M300 200 L300 130" />
+     C294 270, 294 230, 300 215
+     C306 230, 306 270, 300 300
+     M300 215 L300 140" />
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="110"/>
 </svg>
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const centerX = 300;
 const centerY = 300;
-const radius = 240; // Balanced distance for large font
+const radius = 220; // Adjusted radius to ensure a perfect circular layout
 
 const group = document.getElementById("numbers");
 romans.forEach((num, i) => {
@@ -98,6 +97,7 @@ romans.forEach((num, i) => {
   const y = centerY + radius * Math.sin(angle);
 
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  // Using transform for position to better handle the scaleY effect
   text.setAttribute("x", x);
   text.setAttribute("y", y);
   text.textContent = num;
