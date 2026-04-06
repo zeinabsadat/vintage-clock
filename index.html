@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Classic Roman Clock with Fancy Hands</title>
+<title>Ultra Elegant Roman Clock</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -19,17 +19,21 @@ body {
 }
 
 svg {
-  width: 600px;
-  height: 600px;
+  width: 650px;
+  height: 650px;
 }
 
 text {
   font-family: "Bodoni Moda", serif;
-  font-size: 55px; 
+  font-size: 68px; /* Larger size */
   font-weight: 400;
   fill: black;
   text-anchor: middle;
   dominant-baseline: central;
+  /* This creates the 'Extra Tall' look without breaking the SVG math */
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleY(1.5); 
 }
 
 .marker {
@@ -40,15 +44,15 @@ text {
   transform-origin: 300px 300px;
   fill: black;
   stroke: black;
-  stroke-width: 1;
+  stroke-width: 0.5;
 }
 
 .second {
-  stroke-width: 1.5;
+  stroke-width: 1.2;
   fill: none;
 }
 
-.center {
+.center-cap {
   fill: black;
 }
 </style>
@@ -57,36 +61,35 @@ text {
 <body>
 
 <svg viewBox="0 0 600 600">
-  <circle cx="300" cy="300" r="6" class="center"/>
-
   <g id="numbers"></g>
   <g id="markers"></g>
 
   <g id="hour" class="hand">
     <path d="M300 300 L300 280 
-             M300 280 C285 275, 285 260, 300 255 
-             C315 260, 315 275, 300 280
-             M300 255 L300 190 
-             L305 195 L300 180 L295 195 L300 190" />
-    <circle cx="300" cy="267" r="4" fill="white" stroke="black" stroke-width="1.5"/>
+             M300 280 C280 275, 280 250, 300 240 
+             C320 250, 320 275, 300 280
+             M300 240 L300 195" stroke-width="2.5"/>
+    <circle cx="300" cy="265" r="5" fill="white" stroke="black" stroke-width="1"/>
   </g>
 
   <g id="minute" class="hand">
     <path d="M300 300 L300 285
-             M300 285 C290 280, 290 270, 300 265
-             C310 270, 310 280, 300 285
-             M300 265 L300 130 
-             L304 135 L300 115 L296 135 L300 130" />
+             M300 285 C292 280, 292 265, 300 260
+             C308 265, 308 280, 300 285
+             M300 260 L300 135" stroke-width="2"/>
+    <circle cx="300" cy="275" r="3.5" fill="white" stroke="black" stroke-width="1"/>
   </g>
 
-  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="90"/>
+  <line id="second" class="hand second" x1="300" y1="300" x2="300" y2="100"/>
+  
+  <circle cx="300" cy="300" r="6" class="center-cap"/>
 </svg>
 
 <script>
 const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
 const centerX = 300;
 const centerY = 300;
-const radius = 230; 
+const radius = 225; 
 
 const numGroup = document.getElementById("numbers");
 const markGroup = document.getElementById("markers");
@@ -97,19 +100,21 @@ romans.forEach((num, i) => {
   const x = centerX + radius * Math.cos(angleRad);
   const y = centerY + radius * Math.sin(angleRad);
 
+  // Add Number
   const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.setAttribute("transform", `translate(${x}, ${y}) rotate(${angleDeg})`);
   text.textContent = num;
   numGroup.appendChild(text);
 
-  // Diamonds between numbers
+  // Add Slim Diamond Marker
   const markAngleDeg = angleDeg + 15;
   const markAngleRad = (markAngleDeg - 90) * Math.PI / 180;
   const xM = centerX + radius * Math.cos(markAngleRad);
   const yM = centerY + radius * Math.sin(markAngleRad);
 
   const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-  diamond.setAttribute("points", "0,-12 4,0 0,12 -4,0");
+  // Very thin and long diamond points
+  diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
   diamond.setAttribute("class", "marker");
   diamond.setAttribute("transform", `translate(${xM}, ${yM}) rotate(${markAngleDeg})`);
   markGroup.appendChild(diamond);
