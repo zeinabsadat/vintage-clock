@@ -31,11 +31,7 @@
   .hand {
     transform-origin: 300px 260px; 
     fill: black;
-    stroke: black;
-    stroke-width: 0.2;
   }
-
-  .second { stroke-width: 1.2; fill: none; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
 </head>
@@ -47,24 +43,21 @@
 
   <g id="hour" class="hand">
     <path d="M300 260 
-             C292 258, 286 245, 286 230 
-             C286 210, 300 195, 300 180 
-             C300 195, 314 210, 314 230 
-             C314 245, 308 258, 300 260 Z" />
-    <path d="M300 180 L300 145" stroke-width="2.5" />
+             C 292 260, 285 240, 285 220 
+             C 285 190, 300 180, 300 170 
+             C 300 180, 315 190, 315 220 
+             C 315 240, 308 260, 300 260 Z" />
   </g>
 
   <g id="minute" class="hand">
     <path d="M300 260 
-             C295 258, 290 245, 290 225 
-             C290 200, 300 180, 300 160 
-             C300 180, 310 200, 310 225 
-             C310 245, 305 258, 300 260 Z" />
-    <path d="M300 160 L300 70" stroke-width="2" />
+             C 294 260, 290 240, 290 220 
+             C 290 180, 300 160, 300 140 
+             C 300 160, 310 180, 310 220 
+             C 310 240, 306 260, 300 260 Z" />
   </g>
 
-  <line id="second" class="hand second" x1="300" y1="260" x2="300" y2="45"/>
-  <circle cx="300" cy="260" r="5" fill="black"/>
+  <circle cx="300" cy="260" r="7" fill="black"/>
 </svg>
 
 <script>
@@ -91,7 +84,6 @@
     text.textContent = num;
     numGroup.appendChild(text);
 
-   
     const mAngleDeg = angleDeg + 15;
     const mAngleRad = (mAngleDeg - 90) * Math.PI / 180;
     const mx = centerX + radius * Math.cos(mAngleRad);
@@ -110,7 +102,6 @@
     const min = now.getMinutes();
     const hr = now.getHours();
 
-    document.getElementById("second").style.transform = `rotate(${sec * 6}deg)`;
     document.getElementById("minute").style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;
     document.getElementById("hour").style.transform = `rotate(${(hr % 12) * 30 + min * 0.5}deg)`;
   }
