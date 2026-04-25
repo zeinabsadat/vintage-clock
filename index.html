@@ -6,20 +6,17 @@
 <style>
   body {
     margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center; 
     height: 100vh;
     background-color: #fdfdfd;
-    overflow: hidden;
   }
 
   svg {
     width: 100vw;
     height: auto;
     max-width: 550px;
-    display: block;
   }
 
   text {
@@ -31,6 +28,7 @@
   }
 
   .hand {
+    /* تنظیم نقطه چرخش برای تمام عقربه‌ها بر اساس مرکز ساعت */
     transform-origin: 300px 260px;
   }
 </style>
@@ -43,7 +41,7 @@
   <g id="markers"></g>
 
   <image id="hour" class="hand" href="Small clock hand.svg" x="275" y="60" width="50" height="200" />
-  <image id="minute" class="hand" href="Big clock hand.svg" x="270" y="60" width="60" height="200" />
+  <image id="minute" class="hand" href="Big clock hand.svg" x="270" y="60" width="60" height="230" />
 
   <circle cx="300" cy="260" r="7" fill="black"/>
 </svg>
@@ -66,8 +64,6 @@
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", x);
     text.setAttribute("y", y);
-    text.style.transformOrigin = `${x}px ${y}px`;
-    text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`;
     text.textContent = num;
     numGroup.appendChild(text);
     
@@ -89,8 +85,12 @@
     const min = now.getMinutes();
     const hr = now.getHours();
 
-    document.getElementById("minute").style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;
-    document.getElementById("hour").style.transform = `rotate(${(hr % 12) * 30 + min * 0.5}deg)`;
+    // محاسبه زاویه چرخش عقربه‌ها
+    const minDeg = min * 6 + sec * 0.1;
+    const hrDeg = (hr % 12) * 30 + min * 0.5;
+
+    document.getElementById("minute").style.transform = `rotate(${minDeg}deg)`;
+    document.getElementById("hour").style.transform = `rotate(${hrDeg}deg)`;
   }
 
   setInterval(updateClock, 1000);
