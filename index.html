@@ -9,88 +9,112 @@
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     height: 100vh;
     background-color: #fdfdfd;
     overflow: hidden;
   }
-
   svg {
     width: 100vw;
     height: auto;
     max-width: 550px;
     display: block;
   }
-
   text {
     font-family: "Bodoni Moda", serif;
-    font-size: 55px; 
+    font-size: 55px;
     fill: black;
     text-anchor: middle;
     dominant-baseline: central;
-  }
-
-  .hand {
-    transform-origin: 300px 260px;
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <svg viewBox="0 0 600 520">
   <g id="numbers"></g>
   <g id="markers"></g>
 
-  <image id="hour" class="hand" href="Small clock hand.svg" x="275" y="60" width="50" height="200" />
-  <image id="minute" class="hand" href="Big clock hand.svg" x="270" y="60" width="60" height="200" />
+  <!--
+    FIX: Wrap each hand in a <g> and rotate the <g> using SVG's native
+    rotate(angle, cx, cy) — far more reliable than CSS transform-origin on <image>.
 
+    The pivot of each hand (the ornate center circle) is NOT at the very
+    bottom of its SVG file — it sits at approximately:
+      • Big hand   (336×2292): 84.9% from top → pivot_ratio ≈ 0.849
+      • Small hand (368×1024): 89.8% from top → pivot_ratio ≈ 0.898
+
+    Given clock center = (300, 260), for a displayed height H:
+      y_image  = centerY  − pivot_ratio × H
+      width    = (svgW / svgH) × H
+      x_image  = centerX  − width / 2
+  -->
+
+  <!-- Hour hand  — H=150  → x=273, y=125, w=54 -->
+  <g id="hour">
+    <image href="Small clock hand.svg"
+           x="273" y="125" width="54" height="150"
+           preserveAspectRatio="xMidYMid meet"/>
+  </g>
+
+  <!-- Minute hand — H=230  → x=283, y=65,  w=34 -->
+  <g id="minute">
+    <image href="Big clock hand.svg"
+           x="283" y="65" width="34" height="230"
+           preserveAspectRatio="xMidYMid meet"/>
+  </g>
+
+  <!-- Center cap -->
   <circle cx="300" cy="260" r="7" fill="black"/>
 </svg>
 
 <script>
-  const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-  const centerX = 300;
-  const centerY = 260; 
-  const radius = 210; 
-
+  /* ── dial: numbers + diamond markers ───────────────────────── */
+  const romans   = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
+  const centerX  = 300, centerY = 260, radius = 210;
   const numGroup = document.getElementById("numbers");
-  const markGroup = document.getElementById("markers");
+  const markGroup= document.getElementById("markers");
 
   romans.forEach((num, i) => {
-    const angleDeg = i * 30; 
-    const angleRad = (angleDeg - 90) * Math.PI / 180; 
+    const angleDeg = i * 30;
+    const angleRad = (angleDeg - 90) * Math.PI / 180;
     const x = centerX + radius * Math.cos(angleRad);
     const y = centerY + radius * Math.sin(angleRad);
 
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const text = document.createElementNS("http://www.w3.org/2000/svg","text");
     text.setAttribute("x", x);
     text.setAttribute("y", y);
     text.style.transformOrigin = `${x}px ${y}px`;
     text.style.transform = `rotate(${angleDeg}deg) scaleY(1.4)`;
     text.textContent = num;
     numGroup.appendChild(text);
-    
+
     const mAngleDeg = angleDeg + 15;
     const mAngleRad = (mAngleDeg - 90) * Math.PI / 180;
     const mx = centerX + radius * Math.cos(mAngleRad);
     const my = centerY + radius * Math.sin(mAngleRad);
-
-    const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    diamond.setAttribute("points", "0,-14 3.5,0 0,14 -3.5,0");
-    diamond.setAttribute("transform", `translate(${mx}, ${my}) rotate(${mAngleDeg})`);
-    diamond.setAttribute("fill", "black");
+    const diamond = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+    diamond.setAttribute("points","0,-14 3.5,0 0,14 -3.5,0");
+    diamond.setAttribute("transform",`translate(${mx},${my}) rotate(${mAngleDeg})`);
+    diamond.setAttribute("fill","black");
     markGroup.appendChild(diamond);
   });
 
+  /* ── clock tick ─────────────────────────────────────────────── */
   function updateClock() {
     const now = new Date();
     const sec = now.getSeconds();
     const min = now.getMinutes();
-    const hr = now.getHours();
+    const hr  = now.getHours();
 
-    document.getElementById("minute").style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;
-    document.getElementById("hour").style.transform = `rotate(${(hr % 12) * 30 + min * 0.5}deg)`;
+    const minDeg = min * 6  + sec * 0.1;
+    const hrDeg  = (hr % 12) * 30 + min * 0.5;
+
+    /* SVG-native rotate(angle, cx, cy) — no CSS transform-origin needed */
+    document.getElementById("minute")
+            .setAttribute("transform", `rotate(${minDeg},300,260)`);
+    document.getElementById("hour")
+            .setAttribute("transform", `rotate(${hrDeg},300,260)`);
   }
 
   setInterval(updateClock, 1000);
